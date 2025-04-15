@@ -1,43 +1,54 @@
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
+import axios from 'axios'
 
-const email = ref("");
-const password = ref("");
+const email = ref('')
+const motDePasse = ref('')
+const erreur = ref('')
 
-const handleLogin = () => {
-  // Logique de connexion (exemple : appel API)
-  console.log("Email:", email.value);
-  console.log("Password:", password.value);
-};
+const seConnecter = async () => {
+  try {
+    const response = await axios.post('http://localhost/mcdo/backend/login.php', {
+      email: email.value,
+      mot_de_passe: motDePasse.value
+    })
+
+    if (response.data.success) {
+      localStorage.setItem("isLoggedIn", "true"),
+      localStorage.setItem("prenom", response.data.prenom)
+      localStorage.setItem("nom", response.data.nom)
+      localStorage.setItem("mail", response.data.mail)
+      localStorage.setItem("idClient", response.data.idClient)
+      window.location.href = '/article'
+    } else {
+      erreur.value = response.data.message
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
-  <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded">
-    <h1 class="text-2xl font-bold mb-4">Connexion</h1>
-    <form @submit.prevent="handleLogin">
+  <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">Connexion</h2>
+    
+    <div v-if="erreur" class="text-red-500 mb-3">{{ erreur }}</div>
+
+    <form @submit.prevent="seConnecter">
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          id="email"
-          v-model="email"
-          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          required
-        />
+        <label class="block text-gray-700 mb-1">Email</label>
+        <input v-model="email" type="email" required class="w-full border rounded p-2" />
       </div>
+
       <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-        <input type="password" id="password" v-model="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required />
+        <label class="block text-gray-700 mb-1">Mot de passe</label>
+        <input v-model="motDePasse" type="password" required class="w-full border rounded p-2" />
       </div>
-      <button
-        type="submit"
-        class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-      >
+
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
         Se connecter
       </button>
     </form>
   </div>
 </template>
-
-<style scoped>
-</style>

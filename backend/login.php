@@ -1,31 +1,41 @@
 <?php
-session_start(); // ➤ Active les sessions
-
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST");
 
 include "db.php";
+// Vérification de la méthode de requête
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
+    exit;
+}
 
-$data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("php://input"), true);
 
-$mail = $data->mail;
-$mot_de_passe = $data->mot_de_passe;
+$email = $data["email"] ?? '';
+$motDePasse = $data["mot_de_passe"] ?? '';
 
+if (empty($email) || empty($motDePasse)) {
+    echo json_encode(["success" => false, "message" => "Champs requis manquants"]);
+    exit;
+}
+
+// Requête sur la table client
 $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
-$stmt->execute([$mail]);
+$stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
-    $_SESSION['user'] = [
-        "id" => $user['idClient'],
+if ($user && $motDePasse === $user['mot_de_passe']) {
+    echo json_encode([
+        "success" => true,
+        "message" => "Connexion réussie",
+        "idClient" => $user['idClient'],
         "nom" => $user['nom'],
         "prenom" => $user['prenom'],
-        "mail" => $user['mail']
-    ];
-    echo json_encode(["message" => "Connexion réussie", "user" => $_SESSION['user']]);
+        "mail" => $user['mail'],
+        "adresse" => $user['adresse'],
+    ]);
 } else {
-    echo json_encode(["error" => "Email ou mot de passe incorrect"]);
+    echo json_encode(["success" => false, "message" => "Email ou mot de passe incorrect"]);
 }
-?>
