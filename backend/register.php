@@ -1,45 +1,50 @@
 <?php
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-$host = "localhost";
-$dbname = "mcboo";
-$username = "root";
-$password = "";
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo json_encode(["success" => false, "error" => "Erreur de connexion à la base de données."]);
-    exit();
-}
+    $pdo = new PDO("mysql:host=localhost;dbname=mcboo;charset=utf8", "root", "");
 
-$data = json_decode(file_get_contents("php://input"), true);
+    $data = json_decode(file_get_contents("php://input"));
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $data["mail"] ?? "";
-    $password = $data["mot_de_passe"] ?? "";
+    $nom = $data->nom ?? '';
+    $prenom = $data->prenom ?? '';
+    $email = $data->email ?? '';
+    $mot_de_passe = $data->mot_de_passe ?? '';
+    $adresse = $data->adresse ?? '';
+    $telephone = $data->telephone ?? '';
 
-    if (empty($email) || empty($password)) {
-        echo json_encode(["success" => false, "error" => "Tous les champs sont requis."]);
-        exit();
+    if (!$nom || !$prenom || !$email || !$mot_de_passe || !$adresse || !$telephone) {
+        echo json_encode(["success" => false, "message" => "Tous les champs sont requis."]);
+        exit;
     }
 
-    // Hachage du mot de passe
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    // Vérifie si l'email existe déjà
+    $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
+    $stmt->execute([$email]);
+    if ($stmt->fetch()) {
+        echo json_encode(["success" => false, "message" => "Cet email est déjà utilisé."]);
+        exit;
+    }
 
-    try {
-        $stmt = $pdo->prepare("INSERT INTO Client (mail, mot_de_passe) VALUES (:mail, :mot_de_passe)");
-        $stmt->bindParam(":mail", $mail);
-        $stmt->bindParam(":mot_de_passe", $hashedPassword);
-        $stmt->execute();
+    // Hash du mot de passe
+    $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
+    // Insertion
+    $insert = $pdo->prepare("INSERT INTO client (nom, prenom, mail, mot_de_passe, adresse, telephone) VALUES (?, ?, ?, ?, ?, ?)");
+    $success = $insert->execute([$nom, $prenom, $email, $mot_de_passe_hash, $adresse, $telephone]);
+
+    if ($success) {
         echo json_encode(["success" => true]);
-    } catch (PDOException $e) {
-        echo json_encode(["success" => false, "error" => "Erreur lors de l'inscription."]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Erreur lors de l'inscription."]);
     }
+
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "message" => "Erreur PDO : " . $e->getMessage()]);
 }
-?>

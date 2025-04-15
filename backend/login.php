@@ -26,7 +26,7 @@ $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && $motDePasse === $user['mot_de_passe']) {
+if ($user && password_verify($motDePasse, $user['mot_de_passe'])) {
     echo json_encode([
         "success" => true,
         "message" => "Connexion réussie",
@@ -35,6 +35,7 @@ if ($user && $motDePasse === $user['mot_de_passe']) {
         "prenom" => $user['prenom'],
         "mail" => $user['mail'],
         "adresse" => $user['adresse'],
+        "telephone" => $user['telephone'],
     ]);
 } else {
     echo json_encode(["success" => false, "message" => "Email ou mot de passe incorrect"]);

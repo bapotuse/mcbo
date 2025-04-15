@@ -1,70 +1,84 @@
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
-const mail = ref("");
-const mot_de_passe = ref("");
-const message = ref("");
+const router = useRouter()
 
-const handleRegister = async () => {
+const nom = ref('')
+const prenom = ref('')
+const email = ref('')
+const motDePasse = ref('')
+const adresse = ref('')
+const telephone = ref('')
+const erreur = ref('')
+const succes = ref('')
+
+const inscrire = async () => {
   try {
-    const response = await fetch("http://localhost/backend/register.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mail: mail.value,
-        mot_de_passe: mot_de_passe.value,
-      }),
-    });
+    const response = await axios.post('http://localhost/mcdo/backend/register.php', {
+      nom: nom.value,
+      prenom: prenom.value,
+      email: email.value,
+      mot_de_passe: motDePasse.value,
+      adresse: adresse.value,
+      telephone: telephone.value
+    })
 
-    const result = await response.json();
-    if (result.success) {
-      message.value = "Inscription réussie !";
+    if (response.data.success) {
+      window.location.href = '/'
     } else {
-      message.value = result.error || "Une erreur est survenue.";
+      erreur.value = response.data.message
     }
-  } catch (error) {
-    message.value = "Erreur de connexion au serveur.";
+  } catch (err) {
+    erreur.value = "Une erreur est survenue."
+    console.error(err)
   }
-};
+}
 </script>
 
 <template>
-  <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded">
-    <h1 class="text-2xl font-bold mb-4">Inscription</h1>
-    <form @submit.prevent="handleRegister">
+  <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">Inscription</h2>
+
+    <div v-if="erreur" class="text-red-500 mb-3">{{ erreur }}</div>
+    <div v-if="succes" class="text-green-500 mb-3">{{ succes }}</div>
+
+    <form @submit.prevent="inscrire">
+
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Mail</label>
-        <input
-            type="email"
-            id="mail"
-            v-model="mail"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            required
-        />
+        <label class="block text-gray-700 mb-1">Nom</label>
+        <input v-model="nom" type="text" required class="w-full border rounded p-2" />
       </div>
+
       <div class="mb-4">
-        <label for=" " class="block text-sm font-medium text-gray-700">Mot de passe</label>
-        <input
-            type="password"
-            id="mot_de_passe"
-            v-model="mot_de_passe"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            required
-        />
+        <label class="block text-gray-700 mb-1">Prénom</label>
+        <input v-model="prenom" type="text" required class="w-full border rounded p-2" />
       </div>
-      <button
-          type="submit"
-          class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-      >
+
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-1">Email</label>
+        <input v-model="email" type="email" required class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-1">Numéro de Téléphone</label>
+        <input v-model="telephone" type="text" required class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-1">Adresse</label>
+        <input v-model="adresse" type="text" required class="w-full border rounded p-2" />
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-gray-700 mb-1">Mot de passe</label>
+        <input v-model="motDePasse" type="password" required class="w-full border rounded p-2" />
+      </div>
+
+      <button type="submit" class="w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700 transition">
         S'inscrire
       </button>
     </form>
-    <p v-if="message" class="mt-4 text-center text-sm text-red-500">{{ message }}</p>
   </div>
 </template>
-
-<style scoped>
-/* Ajoutez des styles personnalisés ici si nécessaire */
-</style>
