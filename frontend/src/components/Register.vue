@@ -42,7 +42,7 @@ const inscrire = async () => {
     <h2 class="text-2xl font-bold mb-4 text-center">Inscription</h2>
 
     <div v-if="erreur" class="text-red-500 mb-3">{{ erreur }}</div>
-    <div v-if="succes" class="text-green-500 mb-3">{{ succes }}</div>
+    <div v-if="succes" class="text-red-500 mb-3">{{ succes }}</div>
 
     <form @submit.prevent="inscrire">
 

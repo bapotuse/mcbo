@@ -49,11 +49,11 @@ const deconnexion = () => {
             </template>
 
             <template v-else>
-              <RouterLink to="/login" class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700">
+              <RouterLink to="/login" class="block rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700">
                 Login
               </RouterLink>
 
-              <RouterLink to="/register" class="hidden rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75 sm:block">
+              <RouterLink to="/register" class="hidden rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 sm:block">
                 Register
               </RouterLink>
             </template>
