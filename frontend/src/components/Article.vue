@@ -5,9 +5,17 @@ import axios from "axios";
 const articles = ref([]);
 
 onMounted(async () => {
-  const response = await axios.get("http://localhost/mcdo/backend/article.php");
-  articles.value = response.data;
+  try {
+    const response = await axios.get("http://127.0.0.1/mcdo/backend/article.php", {
+      withCredentials: true
+    });
+    console.log("Réponse reçue :", response.data);
+    articles.value = response.data;
+  } catch (error) {
+    console.error("Erreur Axios :", error);
+  }
 });
+
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 
 include "db.php";
@@ -7,7 +8,7 @@ include "db.php";
 $sql = "SELECT * FROM Article";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo json_encode($users);
+echo json_encode($articles);
 ?>

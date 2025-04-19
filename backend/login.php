@@ -1,8 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Content-Type: application/json");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Credentials: true");
+
 
 include "db.php";
 // Vérification de la méthode de requête
@@ -26,7 +28,7 @@ $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($user && password_verify($motDePasse, $user['mot_de_passe'])) {
+if ($user && $motDePasse === $user['mot_de_passe']){
     echo json_encode([
         "success" => true,
         "message" => "Connexion réussie",
