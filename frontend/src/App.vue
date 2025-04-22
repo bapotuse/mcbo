@@ -19,9 +19,7 @@ const deconnexion = () => {
     <div class="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
       <RouterLink to="/" class="block text-teal-600">
         <span class="sr-only">Home</span>
-        <svg class="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Icône ici -->
-        </svg>
+        <img src="../src/assets/vraiMcbo.png" width="80" class="items-center"/>
       </RouterLink>
 
       <div class="flex flex-1 items-center justify-end md:justify-between">
@@ -50,11 +48,11 @@ const deconnexion = () => {
 
             <template v-else>
               <RouterLink to="/login" class="block rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700">
-                Login
+                Se connecter
               </RouterLink>
 
               <RouterLink to="/register" class="hidden rounded-md bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-red-700 sm:block">
-                Register
+                S'inscrire
               </RouterLink>
             </template>
           </div>

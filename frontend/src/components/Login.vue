@@ -46,7 +46,7 @@ const seConnecter = async () => {
         <input v-model="motDePasse" type="password" required class="w-full border rounded p-2" />
       </div>
 
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+      <button type="submit" class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition">
         Se connecter
       </button>
     </form>

@@ -23,7 +23,7 @@ onMounted(async () => {
 
 
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 p-6">
   <div v-for="article in articles" :key="article.id" class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
     <img :src="article.image" alt="Produit" class="w-full h-52 object-cover">
     <div class="p-4">
