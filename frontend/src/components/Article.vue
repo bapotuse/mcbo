@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { useCart } from "../composables/useCart";
 
 const articles = ref([]);
+const { addToCart } = useCart();
 
 onMounted(async () => {
   try {
@@ -31,12 +33,16 @@ onMounted(async () => {
       <p class="text-gray-500 mt-1">{{ article.description }}</p>
       <div class="mt-4 flex justify-between items-center">
         <span class="text-lg font-bold text-red-600">{{ article.prix }} €</span>
-        <button class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md transition-colors">Ajouter</button>
+        <button 
+          @click="addToCart(article)" 
+          class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md transition-colors"
+        >
+          Ajouter au panier
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-    
-</template>
 
+</template>

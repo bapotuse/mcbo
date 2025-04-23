@@ -1,17 +1,16 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { ref, onMounted } from 'vue'
+import { useCart } from './composables/useCart'
 
 const isLoggedIn = ref(false)
+const { itemCount } = useCart()
 
 onMounted(() => {
   isLoggedIn.value = localStorage.getItem("isLoggedIn") === "true"
 })
 
-const deconnexion = () => {
-  localStorage.clear()
-  window.location.href = '/' // Redirige à la page d'accueil
-}
+
 </script>
 
 <template>
@@ -28,6 +27,14 @@ const deconnexion = () => {
             <li>
               <RouterLink to="/article" class="text-gray-500 transition hover:text-gray-500/75">Articles</RouterLink>
             </li>
+            <li>
+              <RouterLink to="/panier" class="flex items-center text-gray-500 transition hover:text-gray-500/75">
+                <span>Panier</span>
+                <span v-if="itemCount > 0" class="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  {{ itemCount }}
+                </span>
+              </RouterLink>
+            </li>
           </ul>
         </nav>
 
@@ -37,13 +44,6 @@ const deconnexion = () => {
               <RouterLink to="/mon-compte" class="block rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-teal-700">
                 Mon compte
               </RouterLink>
-
-              <button
-                @click="deconnexion"
-                class="mt-2 sm:mt-0 sm:ml-2 block rounded-md bg-red-100 px-5 py-2.5 text-sm font-medium text-red-600 transition hover:text-red-700"
-              >
-                Se déconnecter
-              </button>
             </template>
 
             <template v-else>

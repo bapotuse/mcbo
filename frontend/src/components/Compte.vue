@@ -8,8 +8,14 @@ const nom = ref('')
 const prenom = ref('')
 const mail = ref('')
 
+const deconnexion = () => {
+  localStorage.clear()
+  window.location.href = '/' // Redirige à la page d'accueil
+}
+
 onMounted(() => {
   const isLoggedIn = localStorage.getItem('isLoggedIn')
+
   if (isLoggedIn !== 'true') {
     router.push('/login')
   } else {
@@ -29,5 +35,8 @@ onMounted(() => {
       <p><span class="font-semibold text-gray-700">Nom :</span> {{ nom }}</p>
       <p><span class="font-semibold text-gray-700">Mail :</span> {{ mail }}</p>
     </div>
+    <button @click="deconnexion" class="mt-2 sm:mt-0 sm:ml-2 block rounded-md bg-red-100 px-5 py-2.5 text-sm font-medium text-red-600 transition hover:text-red-700">
+      Se déconnecter
+    </button>
   </div>
 </template>
