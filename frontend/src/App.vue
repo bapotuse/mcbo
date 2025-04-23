@@ -18,22 +18,17 @@ onMounted(() => {
     <div class="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
       <RouterLink to="/" class="block text-teal-600">
         <span class="sr-only">Home</span>
-        <img src="../src/assets/vraiMcbo.png" width="80" class="items-center"/>
+        <img src="../src/assets/mcboLogo.png" width="50" class="items-center rounded-lg"/>
       </RouterLink>
 
       <div class="flex flex-1 items-center justify-end md:justify-between">
-        <nav aria-label="Global" class="hidden md:block">
-          <ul class="flex items-center gap-6 text-sm">
+        <nav class="hidden md:block">
+          <ul class="flex items-center gap-6 text-md">
             <li>
-              <RouterLink to="/article" class="text-gray-500 transition hover:text-gray-500/75">Articles</RouterLink>
+              <RouterLink to="/article" class="text-gray-500 font-bold transition hover:text-gray-500/75">Articles</RouterLink>
             </li>
             <li>
-              <RouterLink to="/panier" class="flex items-center text-gray-500 transition hover:text-gray-500/75">
-                <span>Panier</span>
-                <span v-if="itemCount > 0" class="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {{ itemCount }}
-                </span>
-              </RouterLink>
+              <RouterLink to="/nouvelles" class="text-gray-500 font-bold transition hover:text-gray-500/75">Nouvelles</RouterLink>
             </li>
           </ul>
         </nav>
@@ -55,16 +50,13 @@ onMounted(() => {
                 S'inscrire
               </RouterLink>
             </template>
+            <RouterLink to="/panier" class="flex items-center text-gray-500 transition hover:text-gray-500/75">
+                 <font-awesome-icon icon="cart-shopping" />
+                <span v-if="itemCount > 0" class="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  {{ itemCount }}
+                </span>
+              </RouterLink>
           </div>
-
-          <button
-              class="block rounded-sm bg-gray-100 p-2.5 text-gray-600 transition hover:text-gray-600/75 md:hidden"
-          >
-            <span class="sr-only">Toggle menu</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>

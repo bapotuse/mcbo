@@ -7,7 +7,6 @@ header("Access-Control-Allow-Credentials: true");
 
 
 include "db.php";
-// Vérification de la méthode de requête
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
     exit;
@@ -23,7 +22,6 @@ if (empty($email) || empty($motDePasse)) {
     exit;
 }
 
-// Requête sur la table client
 $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);

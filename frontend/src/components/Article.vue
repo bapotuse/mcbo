@@ -25,24 +25,33 @@ onMounted(async () => {
 
 
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 p-6">
-  <div v-for="article in articles" :key="article.id" class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-    <img :src="article.image" alt="Produit" class="w-full h-52 object-cover">
-    <div class="p-4">
-      <h3 class="text-xl font-semibold text-gray-800">{{ article.nom }}</h3>
-      <p class="text-gray-500 mt-1">{{ article.description }}</p>
-      <div class="mt-4 flex justify-between items-center">
-        <span class="text-lg font-bold text-red-600">{{ article.prix }} €</span>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4">
+  <div 
+    v-for="article in articles" 
+    :key="article.id" 
+    class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow w-full"
+  >
+    <img 
+      :src="article.image" 
+      alt="Produit" 
+      class="w-full h-48 object-cover"
+    >
+    <div class="p-3">
+      <h3 class="text-lg font-semibold text-gray-800 truncate">{{ article.nom }}</h3>
+      <p class="text-gray-500 text-sm mt-1 line-clamp-2">{{ article.description }}</p>
+      <div class="mt-2 flex justify-between items-center">
+        <span class="text-base font-bold text-red-600">{{ article.prix }} €</span>
         <button 
           @click="addToCart(article)" 
-          class="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md transition-colors"
+          class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-md"
         >
-          Ajouter au panier
+          Ajouter
         </button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 </template>
