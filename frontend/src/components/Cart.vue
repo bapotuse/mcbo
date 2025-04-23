@@ -33,7 +33,6 @@ const { cartItems, removeFromCart, updateQuantity, totalPrice, clearCart } = use
                 <div class="flex items-center">
                   <div>
                     <h3 class="font-semibold text-gray-800">{{ item.nom }}</h3>
-                    <p class="text-gray-500 text-sm">{{ item.description }}</p>
                   </div>
                 </div>
               </td>
