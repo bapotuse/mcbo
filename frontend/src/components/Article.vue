@@ -48,7 +48,7 @@ onMounted(async () => {
           Ajouter
         </button>
         <RouterLink
-          :to="`/article/${article.id}`"
+          :to="`/article/${article.idArticle}`"
           class="text-blue-600 hover:underline text-sm mt-2 block"
         >
           Voir détails

@@ -27,9 +27,6 @@ onMounted(() => {
             <li>
               <RouterLink to="/article" class="text-gray-500 font-bold transition hover:text-gray-500/75">Articles</RouterLink>
             </li>
-            <li>
-              <RouterLink to="/nouvelles" class="text-gray-500 font-bold transition hover:text-gray-500/75">Nouvelles</RouterLink>
-            </li>
           </ul>
         </nav>
 
