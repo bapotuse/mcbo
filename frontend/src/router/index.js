@@ -5,6 +5,7 @@ import Register from "../components/Register.vue";
 import Article from "../components/Article.vue";
 import Compte from "../components/Compte.vue";
 import Cart from "../components/Cart.vue";
+import ArticleDetail from '../components/ArticleDetail.vue';
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/panier',
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/article/:id',
+    name: 'ArticleDetail',
+    component: ArticleDetail
   }
 ]
 

@@ -25,7 +25,7 @@ onMounted(async () => {
 
 
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 p-4 mx-64">
   <div 
     v-for="article in articles" 
     :key="article.id" 
@@ -47,6 +47,12 @@ onMounted(async () => {
         >
           Ajouter
         </button>
+        <RouterLink
+          :to="`/article/${article.id}`"
+          class="text-blue-600 hover:underline text-sm mt-2 block"
+        >
+          Voir détails
+        </RouterLink>
       </div>
     </div>
   </div>
