@@ -8,8 +8,11 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=mcboo;charset=utf8", "root", "");
-
+    include "db.php";
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(["success" => false, "message" => "Méthode non autorisée"]);
+        exit;
+    }
     $data = json_decode(file_get_contents("php://input"));
 
     $nom = $data->nom ?? '';
@@ -24,7 +27,6 @@ try {
         exit;
     }
 
-    // Vérifie si l'email existe déjà
     $stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
     $stmt->execute([$email]);
     if ($stmt->fetch()) {
@@ -32,10 +34,8 @@ try {
         exit;
     }
 
-    // Hash du mot de passe
     $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_DEFAULT);
 
-    // Insertion
     $insert = $pdo->prepare("INSERT INTO client (nom, prenom, mail, mot_de_passe, adresse, telephone) VALUES (?, ?, ?, ?, ?, ?)");
     $success = $insert->execute([$nom, $prenom, $email, $mot_de_passe_hash, $adresse, $telephone]);
 

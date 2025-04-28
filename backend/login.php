@@ -22,7 +22,7 @@ if (empty($email) || empty($motDePasse)) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT * FROM client WHERE mail = ?");
+$stmt = $pdo->prepare("SELECT * FROM utilisateur WHERE mail = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -30,7 +30,7 @@ if ($user && $motDePasse === $user['mot_de_passe']){
     echo json_encode([
         "success" => true,
         "message" => "Connexion réussie",
-        "idClient" => $user['idClient'],
+        "id" => $user['idUtilisateur'],
         "nom" => $user['nom'],
         "prenom" => $user['prenom'],
         "mail" => $user['mail'],
